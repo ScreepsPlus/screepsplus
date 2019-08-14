@@ -8,11 +8,13 @@ require (
 	github.com/bradfitz/gomemcache v0.0.0-20190329173943-551aad21a668 // indirect
 	github.com/go-macaron/inject v0.0.0-20160627170012-d8a0b8677191 // indirect
 	github.com/go-macaron/session v0.0.0-20190131233854-0a0a789bf193 // indirect
+	github.com/go-resty/resty/v2 v2.0.0
 	github.com/gobuffalo/genny v0.0.0-20190315121735-8b38fb089e88 // indirect
 	github.com/gobuffalo/gogen v0.0.0-20190315121717-8f38393713f5 // indirect
 	github.com/gobuffalo/mapi v1.0.1 // indirect
 	github.com/gobuffalo/packr v1.30.1
 	github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754 // indirect
+	github.com/gogo/protobuf v1.2.0
 	github.com/google/easypki v1.1.0
 	github.com/gorilla/mux v1.7.0
 	github.com/gosimple/slug v1.5.0 // indirect
@@ -20,6 +22,7 @@ require (
 	github.com/inconshreveable/log15 v0.0.0-20180818164646-67afb5ed74ec // indirect
 	github.com/jinzhu/gorm v1.9.8
 	github.com/kr/pty v1.1.3 // indirect
+	github.com/lomik/go-carbon v0.14.0
 	github.com/markbates/oncer v0.0.0-20181203154359-bf2de49a0be2 // indirect
 	github.com/markbates/safe v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect

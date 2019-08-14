@@ -7,11 +7,12 @@ services:
       MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASS: devpassword
+      GOPATH: '/home/dev/go'
     ports:
     - 8000:8000
     volumes:
     - ..:/workspace
-    - ~/.ssh:/root/.ssh-localhost:ro
+    - ~/.ssh:/home/dev/.ssh-localhost:ro
     cap_add:
     - SYS_PTRACE
     security_opt:

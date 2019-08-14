@@ -28,6 +28,9 @@ func HashPassword(password string) (string, error) {
 
 // VerifyPassword verifies password hash
 func VerifyPassword(pass string, proposed string) (bool, error) {
+	if !strings.ContainsRune(pass, '.') {
+		return false, nil
+	}
 	parts := strings.Split(pass, ".")
 	salt := parts[0]
 	hash := parts[1]

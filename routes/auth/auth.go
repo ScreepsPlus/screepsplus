@@ -70,7 +70,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			render(w, r, loginTemplate, "login_view", data)
 		}
-		break
 	case http.MethodPost:
 		r.ParseForm()
 		chal := r.Form.Get("login_challenge")
@@ -87,7 +86,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		user := models.User{}
-		if db.DB.Where(&models.User{Username: username}).First(&user).RecordNotFound() {
+		if db.DB().Where(&models.User{Username: username}).First(&user).RecordNotFound() {
 			invalid()
 			return
 		}

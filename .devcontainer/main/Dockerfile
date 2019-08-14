@@ -45,8 +45,12 @@ RUN apt-get update \
         github.com/golangci/golangci-lint/cmd/golangci-lint \
         github.com/mgechev/revive \
         github.com/derekparker/delve/cmd/dlv 2>&1 \
+    && apt-get -y install zsh curl wget \
     #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+RUN useradd -m -s /usr/bin/zsh dev && chown dev.dev -R $GOPATH
+USER dev
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
