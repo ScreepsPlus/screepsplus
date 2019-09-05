@@ -27,7 +27,7 @@ jobs:
         name: Tag Image
         command: |
           set -x
-          DOCKER_IMAGE=${CIRCLE_PROJECT_USERNAME,,}/$CIRCLE_PROJECT_REPONAME
+          DOCKER_IMAGE=$(echo $CIRCLE_PROJECT_USERNAME | tr '[:upper:]' '[:lower:]')/$CIRCLE_PROJECT_REPONAME
           docker tag $CIRCLE_PROJECT_REPONAME $DOCKER_IMAGE:${CIRCLE_SHA1:0:7}
           if [[ -n "$CIRCLE_BRANCH" ]]; then
             docker tag $CIRCLE_PROJECT_REPONAME $DOCKER_IMAGE:$CIRCLE_BRANCH
@@ -39,7 +39,7 @@ jobs:
     - run:
         name: Push to Repo
         command: |
-          DOCKER_IMAGE=${CIRCLE_PROJECT_USERNAME,,}/$CIRCLE_PROJECT_REPONAME
+          DOCKER_IMAGE=$(echo $CIRCLE_PROJECT_USERNAME | tr '[:upper:]' '[:lower:]')/$CIRCLE_PROJECT_REPONAME
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push $DOCKER_IMAGE
 workflows:
