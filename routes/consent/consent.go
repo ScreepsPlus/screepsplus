@@ -1,13 +1,13 @@
-package auth
+package consent
 
 import (
 	"bytes"
 	"net/http"
 	"net/url"
-
+	"os"
 	"strings"
 
-	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/gorilla/mux"
 	"github.com/ory/hydra/sdk/go/hydra/client"
 	"github.com/ory/hydra/sdk/go/hydra/client/admin"
@@ -24,7 +24,7 @@ var loginTemplate *template.Template
 var consentTemplate *template.Template
 var adminClient *client.OryHydra
 
-var hydraURL = "http://192.168.0.119:4445"
+var hydraURL = os.Getenv("HYDRA_URL") // "http://192.168.0.119:4445"
 
 func init() {
 	box := packr.NewBox("../../templates")
@@ -37,9 +37,14 @@ func init() {
 // NewRouter creates a new auth router
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
+	AddHandlers(r)
+	return r
+}
+
+// AddHandlers attaches handlers to a mux Router
+func AddHandlers(r *mux.Router) {
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/consent", consentHandler)
-	return r
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {

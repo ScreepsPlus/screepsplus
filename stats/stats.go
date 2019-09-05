@@ -2,13 +2,17 @@ package stats
 
 import (
 	"encoding/json"
-	"strconv"
 	"fmt"
+	"strconv"
 )
 
+type StatStorage interface {
+	Send([]Stat) error
+}
+
 type Stat struct {
-	Key string
-	Value float64
+	Key    string
+	Value  float64
 	Labels map[string]string
 }
 
@@ -28,13 +32,13 @@ func FlattenJSON(data interface{}, key string) []Stat {
 	case nil: // Ignore nil
 	case string: // Ignore strings
 	case float64:
-		stat := Stat {
-			Key: key,
+		stat := Stat{
+			Key:   key,
 			Value: v,
 		}
 		ret = append(ret, stat)
 	case []interface{}:
-		for i,vv := range v {
+		for i, vv := range v {
 			subKey := strconv.Itoa(i)
 			if key != "" {
 				subKey = fmt.Sprintf("%s.%s", key, subKey)
@@ -43,7 +47,7 @@ func FlattenJSON(data interface{}, key string) []Stat {
 			ret = append(ret, res...)
 		}
 	case map[string]interface{}:
-		for i,vv := range v {
+		for i, vv := range v {
 			subKey := i
 			if key != "" {
 				subKey = fmt.Sprintf("%s.%s", key, subKey)

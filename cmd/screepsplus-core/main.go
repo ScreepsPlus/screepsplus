@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/screepsplus/screepsplus/db"
-	"github.com/screepsplus/screepsplus/routes/auth"
+	"github.com/screepsplus/screepsplus/routes"
 )
 
 func main() {
 	defer db.DB().Close()
-	r := auth.NewRouter()
+	r := routes.NewRouter()
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         ":8000",
