@@ -26,7 +26,7 @@ func DB() *gorm.DB {
 }
 
 // Init loads and preps the database
-func init() {
+func Init() {
 	mapper := func(key string) string {
 		if v, ok := os.LookupEnv(key); ok {
 			return v

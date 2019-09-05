@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	db.Init()
 	defer db.DB().Close()
 	r := routes.NewRouter()
 	srv := &http.Server{
