@@ -27,7 +27,7 @@ var adminClient *client.OryHydra
 var hydraURL = os.Getenv("HYDRA_URL") // "http://192.168.0.119:4445"
 
 func init() {
-	box := packr.NewBox("../../templates")
+	box := packr.New("templates", "../../templates")
 	loginHTML, _ := box.FindString("login.html.tmpl")
 	loginTemplate = template.Must(template.New("login_view").Parse(loginHTML))
 	adminURL, _ := url.Parse(hydraURL)

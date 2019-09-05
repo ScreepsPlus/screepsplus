@@ -1,3 +1,5 @@
 test-results/
 tmp/
 *.db
+*-packr.go
+packrd
