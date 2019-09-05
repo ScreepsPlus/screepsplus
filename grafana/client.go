@@ -3,6 +3,7 @@ package grafana
 import (
 	"os"
 	"strconv"
+
 	"github.com/go-resty/resty/v2"
 	m "github.com/grafana/grafana/pkg/models"
 )
@@ -35,6 +36,20 @@ type Client struct {
 // Client returns the resty client for this instance
 func (c *Client) Client() *resty.Client {
 	return c.client
+}
+
+// GetUser GET /api/user
+func (c *Client) GetUser() (*m.UserProfileDTO, error) {
+	resp, err := c.client.R().
+		SetResult(&m.UserProfileDTO{}).
+		Get("/api/user")
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, resp.Error().(Error)
+	}
+	return resp.Result().(*m.UserProfileDTO), nil
 }
 
 // GetOrgs GET /api/orgs

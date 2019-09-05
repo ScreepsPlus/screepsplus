@@ -19,9 +19,6 @@ import (
 	"github.com/screepsplus/screepsplus/grafana"
 )
 
-var backendURL = os.Getenv("BACKEND_URL")
-var grafanaURL = os.Getenv("GRAFANA_URL")
-
 // NewRouter creates a new auth router
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
@@ -31,7 +28,7 @@ func NewRouter() *mux.Router {
 
 // AddHandlers attaches handlers to a mux Router
 func AddHandlers(r *mux.Router) {
-	url, _ := url.Parse(backendURL)
+	url, _ := url.Parse(os.Getenv("CARBONAPI_URL"))
 	proxy := httputil.NewSingleHostReverseProxy(url)
 
 	r.Path("/metrics/find").Handler(find(proxy))
