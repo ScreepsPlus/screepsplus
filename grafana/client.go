@@ -129,3 +129,18 @@ func (c *Client) AddDataSource(data m.AddDataSourceCommand) (*m.DataSource, erro
 	}
 	return resp.Result().(*m.DataSource), nil
 }
+
+// UpdateDataSource PUT /api/datasources
+func (c *Client) UpdateDataSource(data m.UpdateDataSourceCommand) (*m.DataSource, error) {
+	resp, err := c.client.R().
+		SetResult(&m.DataSource{}).
+		SetBody(data).
+		Put("/api/datasources")
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, resp.Error().(Error)
+	}
+	return resp.Result().(*m.DataSource), nil
+}
