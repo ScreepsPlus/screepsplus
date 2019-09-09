@@ -3,7 +3,6 @@ package graphite
 import (
 	"fmt"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -46,8 +45,8 @@ type Graphite struct {
 	client *resty.Client
 }
 
-// NewGraphite creates a new Graphite instance
-func NewGraphite(url string, workers int) *Graphite {
+// New creates a new Graphite instance
+func New(url string, workers int) *Graphite {
 	g := &Graphite{
 		queue: make(chan []stats.Stat, 100),
 		url:   url,
@@ -91,14 +90,16 @@ func (g *Graphite) worker() {
 	}
 }
 
-func init() {
-	host := "localhost"
-	port := 2007
-	if v, ok := os.LookupEnv("GRAPHITE_HOST"); ok {
-		host = v
+// ParseStat parses a Graphite plaintext format stat
+// NOTE: This strips the timestamp
+func ParseStat(s string) (*stats.Stat, error) {
+	parts := strings.Split(s, " ")
+	value, err := strconv.ParseFloat(parts[1], 64)
+	if err != nil {
+		return nil, err
 	}
-	if v, ok := os.LookupEnv("GRAPHITE_PORT"); ok {
-		port, _ = strconv.Atoi(v)
-	}
-	NewGraphite(fmt.Sprintf("http://%s:%d", host, port), 4)
+	return &stats.Stat{
+		Key:   parts[0],
+		Value: value,
+	}, nil
 }

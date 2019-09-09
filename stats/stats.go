@@ -3,6 +3,7 @@ package stats
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"strconv"
 )
 
@@ -16,14 +17,14 @@ type Stat struct {
 	Labels map[string]string
 }
 
-func FromJSON(rawjson []byte) (error, []Stat) {
+func FromJSON(r io.Reader) ([]Stat, error) {
 	var data interface{}
-	err := json.Unmarshal(rawjson, &data)
+	err := json.NewDecoder(r).Decode(&data)
 	if err != nil {
-		return err, nil
+		return nil, err
 	}
 	ret := FlattenJSON(data, "")
-	return nil, ret
+	return ret, nil
 }
 
 func FlattenJSON(data interface{}, key string) []Stat {
