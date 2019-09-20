@@ -49,7 +49,13 @@ func AddHandlers(r *mux.Router) {
 		SigningMethod:       jwt.SigningMethodHS256,
 	})
 	r.Use(jwtMiddleware.Handler)
-	r.Handle("/stats/submit", statsSubmit())
+	if _, ok := os.LookupEnv("GRAPHITE_URL"); ok {
+		r.Handle("/stats/submit", statsSubmit())
+	} else {
+		r.HandleFunc("/stats/submit", func(w http.ResponseWriter, r *http.Request) {
+			serverError(w)
+		})
+	}
 }
 
 func jsonErr(err string) []byte {

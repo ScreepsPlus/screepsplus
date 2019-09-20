@@ -1,7 +1,6 @@
 package db
 
 import (
-	"log"
 	"os"
 
 	"github.com/jinzhu/gorm"
@@ -40,12 +39,12 @@ func Init() {
 		panic(err)
 	}
 	db.AutoMigrate(&models.User{})
-	admin := models.User{}
-	if db.Where(&models.User{Username: "admin"}).First(&admin).RecordNotFound() {
-		log.Print("Missing Admin user. Creating.")
-		var firstUser = models.User{Username: "admin", Email: "admin@example.com"}
-		firstUser.SetNewPassword("admin")
-		firstUser.Active = true
-		db.Create(&firstUser)
-	}
+	// admin := models.User{}
+	// if db.Where(&models.User{Username: "admin"}).First(&admin).RecordNotFound() {
+	// 	log.Print("Missing Admin user. Creating.")
+	// 	var firstUser = models.User{Username: "admin", Email: "admin@example.com"}
+	// 	firstUser.SetNewPassword("admin")
+	// 	firstUser.Active = true
+	// 	db.Create(&firstUser)
+	// }
 }

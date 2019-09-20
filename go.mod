@@ -20,6 +20,8 @@ require (
 	github.com/jinzhu/gorm v1.9.10
 	github.com/ory/hydra v1.0.1
 	github.com/prometheus/client_golang v1.1.0
+	github.com/volatiletech/authboss v2.3.0+incompatible
+	github.com/volatiletech/authboss-clientstate v0.0.0-20190912194043-b5b6e0f4355e
 	golang.org/x/crypto v0.0.0-20190829043050-9756ffdc2472
 	gopkg.in/google/easypki.v1 v1.1.0
 )

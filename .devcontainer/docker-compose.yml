@@ -21,6 +21,31 @@ services:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: devpassword
+    volumes:
+      ./data/mysql:/var/lib/mysql
+  grafana:
+    image: grafana/grafana
+    environment:
+      GF_DATABASE_HOST: ''   
+      GF_USERS_ALLOW_USER_PASS_LOGIN: 'true'
+      GF_DATABASE_TYPE: mysql                                                                                                                                                                                                                                               
+      GF_DATABASE_HOST: 'mysql:3306'
+      GF_DATABASE_SSL_MODE: 'false'                                                                                                                                                                                                                                           
+      GF_DATABASE_USER: grafana                                                                                                                                                                                                                                               
+      GF_DATABASE_PASSWORD: devpassword                                                                                                                                                                                                                                      
+      GF_DATABASE_NAME: grafana
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel,ryantxu-ajax-panel,michaeldmoore-multistat-panel'
+      GF_USERS_ALLOW_ORG_CREATE: 'false'
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      # GF_SESSION_PROVIDER: redis
+      # GF_SESSION_PROVIDER_CONFIG: 'addr=redis:6379,pool_size=100,prefix=grafana-public'
+      # GF_SERVER_ROOT_URL: 'https://stats.screepspl.us'
+      GF_SECURITY_ALLOW_EMBEDDING: 'true'
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_NAME: public
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    ports:
+      - 8300:3000
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
