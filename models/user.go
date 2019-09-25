@@ -1,6 +1,7 @@
 package models
 
 import (
+	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -48,7 +49,7 @@ func (user User) GetPID() string {
 
 // PutPID Puts the primary ID for the user (Authboss needs this)
 func (user *User) PutPID(pid string) {
-	user.Username = pid
+	user.Username = strings.ToLower(pid)
 }
 
 // GetPassword Gets the hashed password for the user
@@ -105,6 +106,7 @@ func (user User) GetRecoverExpiry() (expiry time.Time) {
 
 // PutEmail Puts Email
 func (user *User) PutEmail(email string) {
+	email = strings.ToLower(email)
 	user.Email = &email
 }
 

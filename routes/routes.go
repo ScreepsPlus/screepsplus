@@ -13,7 +13,6 @@ import (
 	"github.com/screepsplus/screepsplus/routes/carbonapi"
 	"github.com/screepsplus/screepsplus/routes/consent"
 	"github.com/screepsplus/screepsplus/routes/loki"
-	"github.com/volatiletech/authboss"
 )
 
 // NewRouter creates a new mux Router
@@ -21,7 +20,6 @@ func NewRouter() http.Handler {
 	r := mux.NewRouter()
 	ab := auth.Init()
 
-	r.Use(authboss.ModuleListMiddleware(ab))
 	r.Use(ab.LoadClientStateMiddleware)
 	if checkEnv("carbonapi", []string{"CARBONAPI_URL"}) {
 		carbonapi.AddHandlers(r.PathPrefix("/grafana/carbonapi").Subrouter())

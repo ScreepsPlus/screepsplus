@@ -4,3 +4,5 @@ tmp/
 *-packr.go
 packrd
 .env*
+vendor
+Caddyfile

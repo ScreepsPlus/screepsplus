@@ -66,7 +66,7 @@ func statsSubmit() http.Handler {
 			return
 		}
 		resp := apiResp{
-			OK: 1,
+			Status: "success",
 			Extra: map[string]interface{}{
 				"ts":     time.Now().Unix(),
 				"format": format,

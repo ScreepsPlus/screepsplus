@@ -43,10 +43,13 @@ func (s ServerStorer) Load(ctx context.Context, key string) (authboss.User, erro
 func (s ServerStorer) Save(ctx context.Context, user authboss.User) error {
 	u := user.(*models.User)
 	log.Printf("Save %s %v", user.GetPID(), user)
-	if db.DB().Where(&models.User{Username: u.GetPID()}).First(&u).RecordNotFound() {
+	if db.DB().Where(&models.User{Username: u.GetPID()}).First(&models.User{}).RecordNotFound() {
 		return authboss.ErrUserNotFound
 	}
-	db.DB().Save(&u)
+	if err := db.DB().Save(&u).Error; err != nil {
+		log.Printf("Err while saving: %v", err)
+		return err
+	}
 	return nil
 }
 
