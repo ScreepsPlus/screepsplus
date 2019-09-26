@@ -51,6 +51,10 @@ func Init() *authboss.Authboss {
 	if v, ok := os.LookupEnv("MAIL_FROM_NAME"); ok {
 		mailFromName = v
 	}
+	domain := ".localhost"
+	if v, ok := os.LookupEnv("DOMAIN"); ok {
+		domain = v
+	}
 
 	ab = authboss.New()
 	// TODO: These need to be ENV keys and _random_!
@@ -61,9 +65,13 @@ func Init() *authboss.Authboss {
 	cookieStore := abclientstate.NewCookieStorer(cookieStoreKey, nil)
 	https := strings.HasPrefix(rootURL, "https")
 	cookieStore.Secure = https
+	cookieStore.Domain = domain
+	
 	sessionStore := abclientstate.NewSessionStorer(sessionCookieName, sessionStoreKey, nil)
 	store := sessionStore.Store.(*sessions.CookieStore)
 	store.Options.Secure = https
+	store.Options.Domain = domain
+
 	ab.Config.Storage.Server = serverStore        // dbImpl
 	ab.Config.Storage.SessionState = sessionStore // sessImpl
 	ab.Config.Storage.CookieState = cookieStore   // cookieImpl
@@ -78,6 +86,7 @@ func Init() *authboss.Authboss {
 
 	ab.Config.Core.ViewRenderer = defaults.JSONRenderer{}
 	ab.Config.Core.MailRenderer = NewEmailRenderer()
+	ab.Config.Modules.LogoutMethod = "POST"
 
 	ab.Config.Modules.RegisterPreserveFields = []string{"email"}
 
@@ -148,8 +157,8 @@ func authMigrate(next http.Handler) http.Handler {
 					}
 				}
 			}
-			next.ServeHTTP(w, r)
 		}
+		next.ServeHTTP(w, r)
 	})
 }
 

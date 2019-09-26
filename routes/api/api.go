@@ -20,7 +20,7 @@ var jwtSecret = os.Getenv("JWT_SECRET")
 type apiResp struct {
 	Status string                 `json:"status"`
 	Error  string                 `json:"error,omitempty"`
-	Extra  map[string]interface{} `json:"inline"`
+	Extra  map[string]interface{} `json:"-,inline"`
 }
 
 // NewRouter creates a new auth router
@@ -63,9 +63,9 @@ func AddHandlers(r *mux.Router) {
 	}
 	sr = r.PathPrefix("/user").Subrouter()
 	sr.Use(authboss.Middleware2(auth.AB(), authboss.RequireNone, authboss.RespondUnauthorized))
-	sr.HandleFunc("/me", GetUserMe).Methods("GET")
-	sr.HandleFunc("/email", PostUserEmail).Methods("POST")
-	sr.HandleFunc("/stats", DeleteUserStats).Methods("DELETE")
+	sr.Path("/me").HandlerFunc(GetUserMe)
+	sr.Path("/email").HandlerFunc(PostUserEmail)
+	sr.Path("/stats").HandlerFunc(DeleteUserStats)
 }
 
 // GetUserMe GET /api/user/me
@@ -80,7 +80,11 @@ func GetUserMe(w http.ResponseWriter, r *http.Request) {
 		"username": user.Username,
 		"email":    user.Email,
 	})
-
+	if err != nil {
+		log.Print(err)
+		serverError(w)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(bytes)
 }
